@@ -10,17 +10,9 @@
 
 import sys # sysをインポートする
 
-#ans_col1 = ""
-#ans_col2 = ""
-
 with open(sys.argv[1],"r") as f1 , open(sys.argv[2],"w") as f2 , open(sys.argv[3],"w") as f3 :
-    for word in f1 :
-        #word = word.strip() # 改行抜いた
-        word_list = word.split("\t") # タブを区切ってリストにつっこむ
-        # print(word_list)
-        col1 = [col1_word[0] for col1_word in word_list[0]]
-        col2 = [col2_word[0] for col2_word in word_list[1]]
-        for ans_col1 in col1 :
-            f2.write(ans_col1)
-        for ans_col2 in col2 :
-            f3.write(ans_col2)
+    for word in f1 : # 1行ずつ見る
+        col1 = word.split("\t")[0]
+        col2 = word.split("\t")[1]
+        f2.write(col1 + "\n")
+        f3.write(col2 + "\n")   # +"\n"したいけど文字化け起こす
