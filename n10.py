@@ -10,7 +10,7 @@ import sys
 
 count = 0
 
-with open(sys.argv[1]) as f : # popular-names.txtをfとして開く
+with open(sys.argv[1],"r") as f : # popular-names.txtをfとして開く
     for line in f : # 行数をカウントする
         count += 1 # カウントしていく
 print(count)
