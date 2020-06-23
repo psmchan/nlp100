@@ -4,18 +4,23 @@
 """
 
 import sys
+import queue
+
+q = queue.Queue() # FIFOキューの作成
+
+N = sys.argv[3] # 3つ目で数字取得
+N = int(N) # intにしとく
 
 count = 0
 
-N = sys.argv[3]
-
 with open(sys.argv[1],"r") as f1 , open(sys.argv[2],"w") as f2 :
     for line in f1 :
-        count += 1
+        q.put(line) # 蓄える
+        count += 1 # ついでに行数数える
     else :
-        num = count - int(N) # とりあえず飛ばす行出した
-
-"""
-一応考えているのが、飛ばす行分飛ばして、残り出力みたいな風にしたい。
-結構考えたけどわからないから質問する。
-"""
+        num = count - N # 飛ばす行数える
+    while num > 0 : # 飛ばす分
+        emp = q.get() # とりあえず別のところに蓄えとく
+        num -= 1
+    while not q.empty() : # 残った分、最後までいれる
+        f2.write(q.get())
