@@ -5,17 +5,23 @@
 
 import sys
 
+N = sys.argv[2]
+
 count = 0
-N = sys.argv[2] #ここでNを受け取る
-file = sys.argv[3:3 + int(N) - 1]
+n = 0
 
-with open(sys.argv[1],"r") as f1, open(sys.argv[2],"w") as f2 :
+with open(sys.argv[1],"r") as f1:
     for line in f1 :
-        count += 1 # カウントする
+        count += 1
     else :
-        num = count // int(N) # 何行で分割するか
+        num = count // int(N)
+        # f2.write(str(num))
 
-"""
-疑問:これって分割する分ファイルを用意しないといけないのか。
-ここから分割していこうと思ったけどわからない。
-"""
+    for i in range(1,int(N) + 1) :
+        filename = f"answer_16_{i}.txt"
+        with open(filename,"w") as ansfile :
+            for line in range(n,num) :
+                ansline = f1.readline()
+                ansfile.write(ansline)
+                n += num
+                num += num
