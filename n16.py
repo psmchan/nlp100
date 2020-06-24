@@ -10,13 +10,13 @@ N = sys.argv[2]
 count = 0
 n = 0
 
-with open(sys.argv[1],"r") as f1:
+with open(sys.argv[1],"r") as f1 :
     for line in f1 :
         count += 1
     else :
         num = count // int(N)
-        # f2.write(str(num))
 
+with open(sys.argv[1],"r") as f1 :
     for i in range(1,int(N) + 1) :
         filename = f"answer_16_{i}.txt"
         with open(filename,"w") as ansfile :
