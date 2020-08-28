@@ -54,10 +54,7 @@ data = dict(zip(list1,list2))
 pprint.pprint(data,width = 400) # width = 400 は、解答の4行目を1行で表示させるために400にした。
 """
 import n20
-import pandas as pd
-import json
 import re
-import pprint
 
 def tem() :
     uk = n20.uk()
@@ -71,22 +68,23 @@ def tem() :
     list1 = []
     list2 = []
 
-    for line in kihon.split("\n") :
-        key = re.search(keyword,line)
+    for line in re.split("^\||^\}", kihon, flags = re.MULTILINE) :
+        key = re.search(keyword, line, flags = re.DOTALL)
         if key != None :
             list1_word = re.sub(remove_word, "", key.group(1))
             list1_word = re.sub("^ +","",list1_word) # 最初の空白削除
             list1.append(re.sub(" +$","",list1_word)) # 最後の空白削除
             #list1.append(re.sub(remove_word, "", key.group(1))) # 最初の|を消去
             list2_word = re.sub("^ +","",key.group(2)) # 最初の空白削除
+            list2_word = re.sub("\n$", "", list2_word)
             list2.append(list2_word)
-        else :
+        elif line[0] == "}" :
             continue
 
     data = dict(zip(list1,list2))
-
     return data
 
 if __name__ == "__main__" :
     ans = tem()
-    pprint.pprint(ans,width = 400)
+    for key, value in ans.items() :
+        print(key, value)

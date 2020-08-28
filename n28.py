@@ -4,7 +4,6 @@
 """
 import n27
 import re
-import pprint
 
 def med() :
     tem = n27.link()
@@ -22,4 +21,5 @@ def med() :
 
 if __name__ == "__main__" :
     ans = med()
-    pprint.pprint(ans,width = 400)
+    for key, value in ans.items() :
+        print(key, value)

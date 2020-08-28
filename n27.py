@@ -8,7 +8,6 @@ re.sub(r"[この中に除去したい文字を入れる]")
 """
 import n26
 import re
-import pprint
 
 def link() :
     tem2 = n26.em()
@@ -29,4 +28,5 @@ def link() :
 
 if __name__ == "__main__" :
     ans = link()
-    pprint.pprint(ans,width = 400)
+    for key, value in ans.items() :
+        print(key, value)

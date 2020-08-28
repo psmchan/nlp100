@@ -3,7 +3,6 @@
 （弱い強調，強調，強い強調のすべて）を除去してテキストに変換せよ
 """
 import re
-import pprint
 import n25
 
 def em() :
@@ -23,4 +22,5 @@ def em() :
 
 if __name__ == "__main__" :
     ans = em()
-    pprint.pprint(ans,width = 400)
+    for key, value in ans.items() :
+        print(key, value)
