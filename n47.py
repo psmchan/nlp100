@@ -56,6 +56,8 @@ def verb() :
         return final_dst_srcs, final_id_morph
 
 if __name__ == "__main__" :
+    moto_base = []
+    moto_pos = []
     ans = verb()
     dst_srcs = ans[0]
     id_morph = ans[1]
@@ -64,12 +66,62 @@ if __name__ == "__main__" :
         id_morph_dict = id_morph[number]
         for key ,values in dst_srcs_dict.items() : # key:かかり先,value:かかり元
             if key != -1 :
-                for value in values :
-                    moto_bunsetsu = id_morph_dict[value] # 1個の文節
-                    # print(moto_bunsetsu)
-                    for moto_tango in moto_bunsetsu :
-                        # print(moto_tango)
-                        if moto_tango[1] == "名詞" and moto_tango[2] == "サ変接続" : # [1]が名詞、[2]がサ変接続
-                            sahen = moto_tango[0] # サ変接続の名詞の単語
-                            motoindex = moto_bunsetsu.index(moto_tango) # 参照できるようにする
-                            print(motoindex)
+                saki_bunsetsu = id_morph_dict[key] # 文節がこれ
+                for saki_tango in saki_bunsetsu :
+                    # print(saki_tango)
+                    if "動詞" in saki_tango :
+                        #print(key, values)
+                        for value in values : # 動詞にかかるかかり元のリスト
+                            #print(value)
+                            moto_bunsetsu = id_morph_dict[value]
+                            # print(moto_bunsetsu)
+                            for num in range(len(moto_bunsetsu)) :
+                                try :
+                                    meishi = moto_bunsetsu[num]
+                                    wo = moto_bunsetsu[num + 1]
+                                    if "サ変接続" in meishi and "を" in wo :
+                                        moto_list = []
+                                        j_list = []
+                                        w_list = []
+                                        sahen_wo = meishi[0] + wo[0]
+                                        saki = saki_tango[0]
+                                        # print(sahen_wo + saki)
+                                        # print(key) # sakiの動詞
+                                        # print(value) #　サ変接続 + を
+                                        # print(values) # サ変接続 + を の文節の番号、それ以外の番号
+                                        if len(values) > 1 : # サ変接続 + を の文節のみではない場合
+                                            for val in values :
+                                                if val != value : # サ変接続 + を の文節でない場合
+                                                    bunsetsu = id_morph_dict[val]
+                                                    # print(bunsetsu)
+                                                    for word in bunsetsu : # 単語を回す
+                                                        moto_base.append(word[0])
+                                                        moto_pos.append(word[1])
+                                                    # print(moto_base)
+                                                    # print(moto_pos)
+                                                    if "助詞" in moto_pos :
+                                                        tango = "".join(moto_base)
+                                                        m_num = [num for num, jyoshi in enumerate(moto_pos) if jyoshi == "助詞"]
+                                                        for num in m_num :
+                                                            jyoshi_word = moto_base[num] # jyoshi_wordは助詞の単語
+                                                            jyoshi_list = [jyoshi_word, tango]
+                                                            moto_list.append(jyoshi_list)
+                                                    moto_base = []
+                                                    moto_pos = []
+                                            # print(moto_list)
+                                            moto_list.sort() # 助詞を基準に「あ」から「ん」の順で並べ替える
+                                            # print(moto_list)
+                                            for jyoshi_bunsetsu in moto_list :
+                                                j = jyoshi_bunsetsu[0] # 助詞の取り出し
+                                                j_list.append(j)
+                                                w = jyoshi_bunsetsu[1] # 単語 + 助詞の取り出し
+                                                if w not in w_list : # 被りを防ぐ
+                                                    w_list.append(w)
+                                            j_word = " ".join(j_list)
+                                            w_word = " ".join(w_list)
+                                            # print(sahen_wo + saki + "\t" + j_word + "\t" + w_word)
+                                        #else :
+                                            #print(sahen_wo + saki)
+                                            #continue
+                                except :
+                                    break
